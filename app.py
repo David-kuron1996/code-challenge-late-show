@@ -15,3 +15,25 @@ migrate = Migrate(app, db)
 def get_episodes():
     episodes = Episode.query.all()
     return jsonify([episode.to_dict() for episode in episodes])
+@app.route('/episodes/<int:id>', methods=['GET'])
+def get_episode(id):
+    episode = Episode.query.get(id)
+    if episode:
+        result = episode.to_dict()
+        result['appearances'] = [
+            {
+                'id': appearance.id,
+                'rating': appearance.rating,
+                'episode_id': appearance.episode_id,
+                'guest_id': appearance.guest_id,
+                'guest': {
+                    'id': appearance.guest.id,
+                    'name': appearance.guest.name,
+                    'occupation': appearance.guest.occupation
+                }
+            }
+            for appearance in episode.appearances
+        ]
+        return jsonify(result)
+    else:
+        return jsonify({'error': 'Episode not found'}), 404
