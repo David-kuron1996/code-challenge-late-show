@@ -21,5 +21,18 @@ id: Primary key (Integer)
 name: The guest's full name (String)
 occupation: The guest's profession (String)
 
+3. Appearance
+A join table that represents a guest's appearance on a specific episode, including their rating.
+
+id: Primary key (Integer)
+rating: The guest's rating from 1 to 5 (Integer)
+episode_id: Foreign key linking to an Episode (Integer)
+guest_id: Foreign key linking to a Guest (Integer)
+
+Relationships
+An Episode has many Guests through Appearance.
+A Guest has many Episodes through Appearance.
+An Appearance belongs to one Episode and one Guest.
+Cascade deletes are configured, meaning if an Episode or Guest is deleted, their associated Appearance records are also deleted.
 
 
